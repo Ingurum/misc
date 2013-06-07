@@ -61,7 +61,7 @@
                 <configuration>
                     <executable>java</executable>
                     <arguments>
-                        
+                        <argument>-Djava.library.path=/usr/lib/jni/</argument>
                         <argument>-classpath</argument>
                         <classpath/>
                         
@@ -113,7 +113,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <forkMode>once</forkMode>
-                    
+                    <argLine>-Djava.library.path=/usr/lib/jni/</argLine>
                 </configuration>
             </plugin> 
         </plugins>
