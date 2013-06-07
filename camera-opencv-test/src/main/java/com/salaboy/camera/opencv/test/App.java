@@ -67,8 +67,9 @@ public class App {
     public void init() {
         try {
 
-            String classiferName = "/Users/salaboy/MyApps/OpenCV-2.4.3/data/haarcascades/haarcascade_frontalface_alt.xml";
-
+            String classiferName = App.class.getResource("/haarcascade_frontalface_alt.xml").getFile();
+            
+            
             classifier = new opencv_objdetect.CvHaarClassifierCascade(cvLoad(classiferName));
             
             if (classifier.isNull()) {
