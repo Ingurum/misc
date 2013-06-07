@@ -18,14 +18,14 @@
         <dependency>
       <groupId>com.googlecode.javacv</groupId>
       <artifactId>javacv</artifactId>
-      <version>0.3</version>
+      <version>0.5</version>
       
       
     </dependency>
      <dependency>
       <groupId>com.googlecode.javacv</groupId>
       <artifactId>javacv</artifactId>
-      <version>0.3</version>
+      <version>0.5</version>
       <classifier>macosx-x86_64</classifier>
       <!--classifier>android-arm</classifier-->
       <!--classifier>linux-x86</classifier-->
@@ -34,7 +34,7 @@
     <dependency>
       <groupId>com.googlecode.javacpp</groupId>
       <artifactId>javacpp</artifactId>
-      <version>0.3</version>
+      <version>0.5</version>
     </dependency>
     
     <dependency>
