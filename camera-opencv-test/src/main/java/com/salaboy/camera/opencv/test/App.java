@@ -37,8 +37,7 @@ public class App {
     public App() throws FrameGrabber.Exception {
         init();
 
-        OpenCVFrameGrabber grabber = new OpenCVFrameGrabber("");
-
+        OpenCVFrameGrabber grabber = new OpenCVFrameGrabber("http://192.168.2.104:8090");
 
         grabber.start();
 

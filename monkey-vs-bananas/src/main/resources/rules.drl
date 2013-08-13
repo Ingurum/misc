@@ -1,0 +1,95 @@
+package rules;
+
+import com.salaboy.monkey.vs.bananas.model.*;
+import com.salaboy.monkey.vs.bananas.extra.*;
+import org.kie.api.runtime.rule.*;
+
+
+
+
+rule "Task: Monkey Push Box to Banana position"
+    when
+        not(Goal(name == "Box in Banana Position"))
+        $m: Monkey()
+        $b: Box()
+        if( $m.getX() != $b.getX() )  break[needSamePositionX]
+        if( $m.getY() != $b.getY() )  break[needSamePositionY]
+        $banana: Banana();
+        
+    then 
+        System.out.println("the box is about to be pushed");
+        modify($b){
+           setY($banana.getY()),
+           setX($banana.getX())
+        };
+
+        modify($m){
+           setY($banana.getY()),
+           setX($banana.getX())
+        };
+
+     
+        System.out.println("Box Pushed to new position X=" + $b.getX() + " Y=" + $b.getY() );
+        insert(new Goal("Box in Banana Position"));
+        
+    then[needSamePositionX]
+        System.out.println("Requesting change of X position for the monkey=" + $b.getX());
+        insert( new ChangeValue($m, $m.getClass().getName(), "x", "==", String.valueOf($b.getX()) ));
+    then[needSamePositionY]
+        System.out.println("Requesting change of Y position for the monkey=" + $b.getY());
+        insert( new ChangeValue($m, $m.getClass().getName(), "y", "==", String.valueOf($b.getY()) ));          
+end
+
+rule "Task: Monkey Grab Banana if box is in place"
+    when
+        Goal(name == "Box in Banana Position")
+        $m: Monkey($mx: x, $my: y)
+        $banana: Banana(x == $mx, y == $my)
+        
+        if( $banana.getLevel() != $m.getLevel() )  break[needSameLevel]
+        
+        $b: Box()//x == $mx, y == $my
+        
+    then
+        System.out.println("Monkey with Banana!");
+       
+    then[needSameLevel]
+        System.out.println("Requesting change of level for the monkey=" + $banana.getLevel());
+        insert( new ChangeValue($m, $m.getClass().getName(), "level", "==", $banana.getLevel() ));  
+end
+
+
+
+rule "Apply Change Value X"
+    when
+        $change: ChangeValue(field == "x")
+    then
+        System.out.println("modifying monkey X position to =" + $change.getValue());
+        modify((Monkey)$change.getInstance()){
+            setX(Integer.valueOf($change.getValue()))
+        };
+        retract($change);
+end
+
+rule "Apply Change Value Y"
+    when
+        $change: ChangeValue(field == "y")
+    then
+        System.out.println("modifying monkey Y position to =" + $change.getValue());
+        modify((Monkey)$change.getInstance()){
+            setY(Integer.valueOf($change.getValue()))
+        };
+        retract($change);
+      
+end
+
+rule "Apply Change Value Level"
+    when
+        $change: ChangeValue(field == "level")
+    then
+        System.out.println("modifying monkey level to =" + $change.getValue());
+        modify((Monkey)$change.getInstance()){
+            setLevel($change.getValue())
+        };
+        retract($change);
+end
